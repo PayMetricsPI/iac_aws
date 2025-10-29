@@ -123,6 +123,7 @@ INSTANCE_ID=$(aws ec2 run-instances \
     --key-name "$NOME_CHAVE_PEM" \
     --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":$TAMANHO_DISCO,\"VolumeType\":\"gp3\",\"DeleteOnTermination\":true}}]" \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$NOME_INSTANCIA}]" \
+    --user-data file:/configAplicacao.txt
     --query "Instances[0].InstanceId" \
     --output text)
 
