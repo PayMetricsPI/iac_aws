@@ -84,11 +84,6 @@ ID_SECURITY_GROUP=$(aws ec2 describe-security-groups \
   --filters "Name=group-name,Values=$GRUPO_SEGURANCA" \
   --output text)
 
-# pegando o id da primeira subnet padrao
-ID_SUBNET=$(aws ec2 describe-subnets \
-    --query "Subnets[0].SubnetId" \
-    --output text)
-
 # porta http
 aws ec2 authorize-security-group-ingress \
  --group-id "$ID_SECURITY_GROUP" \
@@ -107,7 +102,7 @@ aws ec2 authorize-security-group-ingress \
 # criando par de chaves pem
 aws ec2 create-key-pair \
  --key-name "$NOME_CHAVE_PEM" \
- --region us-east-1 \
+ --region us-east-1a     \
  --query 'KeyMaterial' \
  --output text > "$NOME_CHAVE_PEM.pem"
 
@@ -119,7 +114,6 @@ INSTANCE_ID=$(aws ec2 run-instances \
     --count 1 \
     --security-group-ids "$ID_SECURITY_GROUP" \
     --instance-type t3.small \
-    --subnet-id "$ID_SUBNET" \
     --key-name "$NOME_CHAVE_PEM" \
     --block-device-mappings "[{\"DeviceName\":\"/dev/sda1\",\"Ebs\":{\"VolumeSize\":$TAMANHO_DISCO,\"VolumeType\":\"gp3\",\"DeleteOnTermination\":true}}]" \
     --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$NOME_INSTANCIA}]" \
