@@ -102,7 +102,7 @@ aws ec2 authorize-security-group-ingress \
 # criando par de chaves pem
 aws ec2 create-key-pair \
  --key-name "$NOME_CHAVE_PEM" \
- --region us-east-1a     \
+ --region us-east-1     \
  --query 'KeyMaterial' \
  --output text > "$NOME_CHAVE_PEM.pem"
 
